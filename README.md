@@ -3,7 +3,7 @@ Utilizando o SignalR SelfHosted em um Windows Service e sendo consumido por uma 
 
 ## Objetivo
 
-Exemplificar como o SignalR pode ser utilizado para integração com outros sistemas e enviar dados para atualizar sistemas em tempo real.
+Exemplificar como o SignalR pode ser utilizado para integração com outros sistemas e enviar dados para atualizar aplicações Web em tempo real.
 
 ## Feedback
 
