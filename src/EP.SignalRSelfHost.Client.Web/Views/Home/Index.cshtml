@@ -1,0 +1,120 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+
+<div class="container">
+    <div class="col-lg-12">
+        <h1 class="page-header">Dashboard</h1>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="glyphicon glyphicon-time"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div>
+                            <span class="medium" id="timenow"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <div id="broadcastcolor" class="">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="glyphicon glyphicon-usd"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div>
+                            <span class="huge" id="broadcastdata"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="col-lg-12">
+        <div class="chat-panel panel panel-default">
+            <div class="panel-heading">Participe do Chat</div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <ul id="chatMessages" style="list-style-type: none;">
+
+                </ul>
+            </div>
+            <!-- /.panel-body -->
+            <div class="panel-footer">
+                <div class="input-group">
+                    <input id="text-nome" type="text" class="form-control input-sm" placeholder="Seu Nome"> &nbsp;
+                    <input id="text-mensagem" type="text" class="form-control input-sm" placeholder="Escreva aqui sua mensagem...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-warning btn-sm" id="enviarMensagem">Enviar</button>
+                    </span>
+                </div>
+            </div>
+            <!-- /.panel-footer -->
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <!-- SignalR library. -->
+    <script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
+    <!-- SignalR hub script gerado automaticamente pelo serviço -->
+    <script src="http://localhost:8080/signalr/hubs"></script>
+    <!-- Conexão com SignalR e Atualização de Mensagens -->
+    <script type="text/javascript">
+        $(function() {
+            // Definindo a URL onde o serviço está rodando
+            $.connection.hub.url = "http://localhost:8080/signalr";
+
+            // Conectando no Hub
+            var chat = $.connection.broadcastHub;
+
+            // Recebendo o horário do Hub
+            chat.client.showTime = function(timenow) {
+                $('#timenow').text(timenow);
+            };
+
+            // Recebendo os valores do Hub
+            chat.client.showBrokerStatus = function(valor, cor) {
+                // Add the message to the page.
+                $('#broadcastdata').text(valor);
+                $('#broadcastcolor').attr("class", "panel panel-" + cor);
+            };
+
+            // Recebendo chat do Hub
+            chat.client.sendChatMessage = function(nome, msg) {
+                // Adicionando itens na lista do chat
+                $('#chatMessages').append('<li class="left clearfix"><div class="chat-body clearfix"><div class="header"><strong class="primary-font">' + nome + '</strong></div><p>' + msg + '</p></div></li>');
+            };
+
+            // Iniciando a conexão ao carregar a página
+            $.connection.hub.start().done(function () {
+
+                // Evento click do botão do chat
+                $('#enviarMensagem').click(function() {
+                    if ($('#text-mensagem').val().length === 0 || $('#text-nome').val().length === 0)
+                        return false;
+
+                    // Enviando mensagens para o servidor
+                    chat.server.sendMessage($('#text-nome').val(), $('#text-mensagem').val());
+                    $('#text-mensagem').val('').focus();
+                });
+            });
+        });
+    </script>
+}
+
+
+
