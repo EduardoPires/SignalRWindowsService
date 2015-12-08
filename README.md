@@ -1,4 +1,5 @@
-# SignalR WindowsService
+# SignalR Windows Services
+
 Utilizando o SignalR SelfHosted em um Windows Service e sendo consumido por uma aplicação ASP.NET MVC
 
 ## Objetivo
@@ -7,7 +8,7 @@ Exemplificar como o SignalR pode ser utilizado para integração com outros sist
 
 ### Detalhes
 
-Não é necessário instalar o serviço (Windows Service), basta setar os dois projetos para iniciarem juntos e realizar um Debug.
+Para testes de desenvolvimento não é necessário instalar o serviço (Windows Service), basta setar os dois projetos para iniciarem juntos e realizar um Debug.
 
 ## Feedback
 
