@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.AspNet.SignalR.Client;
+﻿using Microsoft.AspNet.SignalR.Client;
+using System;
 
 namespace EP.SignalRSelfHost.Server.WindowsService
 {
@@ -19,6 +19,8 @@ namespace EP.SignalRSelfHost.Server.WindowsService
             var brokerData = BrokerAnalyzer();
             hub.Invoke("BrokerStatus", brokerData.Value, brokerData.Color).Wait();
 
+            connection.Stop();
+            connection.Dispose();
         }
 
         private static BrokerData BrokerAnalyzer()
